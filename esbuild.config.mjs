@@ -48,11 +48,11 @@ esbuild
 				assets: [
 					{
 						from: ["./manifest.json"],
-						to: ["./build/my-obsidian-plugin/manifest.json"],
+						to: ["./build/meta-kanban/manifest.json"],
 					},
 					{
 						from: ["./main.js"],
-						to: ["./build/my-obsidian-plugin/main.js"],
+						to: ["./build/meta-kanban/main.js"],
 					},
 				],
 			}),

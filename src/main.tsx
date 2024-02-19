@@ -1,4 +1,4 @@
-import { Plugin } from "obsidian";
+import { MarkdownRenderer, Plugin } from "obsidian";
 
 import React from "react";
 import { createRoot } from "react-dom/client";
@@ -17,30 +17,29 @@ export default class MyObsidianPlugin extends Plugin {
 
 		this.addSettingTab(new MyObsidianPluginSettingsTab(this.app, this));
 
-		this.registerMarkdownCodeBlockProcessor(
-			"my-obsidian-plugin",
-			(s, e, i) => {
-				let data = loadData(s);
-				e.empty();
-				const root = createRoot(e);
-				root.render(
-					<React.StrictMode>
-						<App
-							data={data}
-							getSectionInfo={() => i.getSectionInfo(e)}
-							settings={this.settings}
-							app={this.app}
-						/>
-					</React.StrictMode>
-				);
-			}
-		);
+		this.registerMarkdownCodeBlockProcessor("meta-kanban", (s, e, i) => {
+			//let data = loadData(s);
+			e.empty();
+			const root = createRoot(e);
+			root.render(
+				<React.StrictMode>
+					<App
+						//data={data}
+						text={s}
+						getSectionInfo={() => i.getSectionInfo(e)}
+						settings={this.settings}
+						app={this.app}
+						plugin={this}
+					/>
+				</React.StrictMode>,
+			);
+		});
 
 		this.addCommand({
 			id: `insert`,
 			name: `Insert My Plugin`,
 			editorCallback: (e, _) => {
-				e.replaceSelection("```my-obsidian-plugin\n```\n");
+				e.replaceSelection("```meta-kanban\n```\n");
 			},
 		});
 	}
@@ -49,11 +48,22 @@ export default class MyObsidianPlugin extends Plugin {
 		this.settings = Object.assign(
 			{},
 			defaultSettings,
-			await this.loadData()
+			await this.loadData(),
 		);
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+
+	async renderMarkdown(markdown: string) {
+		// Create a temporary div to hold the rendered HTML
+		const tempDiv = createDiv();
+		// Use Obsidian's MarkdownRenderer to render the markdown to our div
+		await MarkdownRenderer.render(this.app, markdown, tempDiv, "/", this);
+		// Now, `tempDiv` contains the rendered HTML. You can insert it into the DOM or use it as needed.
+		console.log(tempDiv.innerHTML);
+		// Cleanup if you're done with the div
+		tempDiv.remove();
 	}
 }
