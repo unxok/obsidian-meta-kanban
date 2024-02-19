@@ -4,6 +4,9 @@ import { z } from "zod";
 
 const configSchema = z.object({
 	title: z.string(),
+	from: z.string(),
+	where: z.string(),
+	columns: z.string().array().min(1),
 	property: z.string(),
 	direction: z.union([z.literal("horizontal"), z.literal("vertical")]),
 	lanes: z
@@ -11,7 +14,8 @@ const configSchema = z.object({
 			z.union([z.string(), z.number()]),
 			z.union([z.string(), z.void()]),
 		])
-		.array(),
+		.array()
+		.min(1),
 });
 
 export type ConfigSchema = z.infer<typeof configSchema>;
@@ -27,6 +31,17 @@ export const validateInput = (text: string) => {
 			switch (lineArr[0]) {
 				case "title":
 					acc.title = lineArr[1];
+					return acc;
+				case "from":
+					acc.from = lineArr[1];
+					return acc;
+				case "where":
+					acc.where = lineArr[1];
+					return acc;
+				case "columns":
+					acc.columns.push(
+						...lineArr[1].split(",").map((v) => v.trim()),
+					);
 					return acc;
 				case "property":
 					acc.property = lineArr[1];
@@ -45,6 +60,9 @@ export const validateInput = (text: string) => {
 			title: undefined,
 			property: undefined,
 			direction: undefined,
+			from: "",
+			where: "",
+			columns: [],
 			lanes: [],
 		},
 	);

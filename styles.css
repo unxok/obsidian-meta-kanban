@@ -1,5 +1,7 @@
 .board-lane:hover {
-	box-shadow: 10px 5px 5px
-		hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-	color: red;
+	background-color: var(--background-modifier-active-hover);
+}
+
+.lane-card {
+	padding: 5px;
 }

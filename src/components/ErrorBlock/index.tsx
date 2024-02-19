@@ -49,7 +49,8 @@ export const ErrorBlock = ({ validated, original }) => {
 				))}
 			</ul>
 			<p>
-				<i>Required fields:</i> title, property, direction, lane
+				<i>Required fields:</i> title, property, direction, from, where,
+				columns, lane
 			</p>
 			<p>
 				Refer to the&nbsp;

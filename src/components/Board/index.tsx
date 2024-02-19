@@ -1,11 +1,20 @@
 import React from "react";
 import { ConfigSchema } from "../../utils/validateInput";
+import { getDv } from "@/utils/getDv";
+import { getLinkpath, parseLinktext } from "obsidian";
 
 type BoardProps = {
 	config: ConfigSchema;
+	dv: ReturnType<typeof getDv>;
 };
 
-export const Board = ({ config }: BoardProps) => {
+export const Board = ({ config, dv }: BoardProps) => {
+	const dvData = dv
+		.pages(config.from)
+		.where((p) => eval(config.where))
+		.map((p) => [p.file.link, ...config.columns.map((c) => p[c])]);
+
+	console.log("heres your dv data ", dvData);
 	return (
 		<div className="meta-kanban" id="meta-kanban">
 			<h1>{config.title}</h1>
@@ -32,14 +41,39 @@ export const Board = ({ config }: BoardProps) => {
 							}}
 						>
 							<h4>{lane[1] ? lane[1] : lane[0]}</h4>
-							<div
-								style={{
-									backgroundColor:
-										"var(--background-primary-alt)",
-								}}
-							>
-								sadfsadf
-							</div>
+							{dvData.map((p, i) => (
+								<div
+									className="lane-card"
+									key={`lane-card-${i}-${Math.random()}`}
+									style={{
+										backgroundColor:
+											"var(--background-primary-alt)",
+									}}
+								>
+									{p.map((v, i) => {
+										if (i === 0) {
+											console.log(parseLinktext(v.path));
+											return (
+												<div
+													key={`lane-card-value-${i}-${Math.random()}`}
+												>
+													<a href={v.path}>
+														{v.path.slice(
+															0,
+															v.path.length - 3,
+														)}
+													</a>
+												</div>
+											);
+										}
+										<div
+											key={`lane-card-value-${i}-${Math.random()}`}
+										>
+											{v}
+										</div>;
+									})}
+								</div>
+							))}
 						</div>
 					);
 				})}
