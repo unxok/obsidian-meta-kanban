@@ -22,9 +22,8 @@ const getMessages = (obj: any) => {
 	return messages;
 };
 
-export const ErrorBlock = ({ validated, original }) => {
+export const ZodErrorBlock = ({ validated, original }) => {
 	const [isDetailsOpen, setDetailsOpen] = useState(false);
-
 	const validationError = (validated as { error: ZodError }).error;
 	console.log("original text: ", original);
 	console.log("validated result: ", validated);
@@ -66,6 +65,58 @@ export const ErrorBlock = ({ validated, original }) => {
 					callback={(content) =>
 						content.createEl("pre").createEl("code", {
 							text: JSON.stringify(validationError, undefined, 1),
+						})
+					}
+					detailsHandler={setDetailsOpen}
+				></InfoModal>
+			)}
+		</div>
+	);
+};
+
+export const YamlErrorBlock = ({ error, original }) => {
+	const [isDetailsOpen, setDetailsOpen] = useState(false);
+	console.log("original text: ", original);
+
+	return (
+		<div
+			id="meta-kanban"
+			style={{
+				backgroundColor: "var(--code-background)",
+				padding: "1em",
+			}}
+		>
+			<span className="code-block-flair" style={{ zIndex: 0 }}>
+				Meta Kanban
+			</span>
+			<h4>Oops! Let's try that again...</h4>
+			<div>
+				<i>Looks like your YAML syntax is invalid:</i>
+			</div>
+			<code>
+				<b>{error.message}</b>
+			</code>
+			<p>
+				Refer to&nbsp;
+				<a href="https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html">
+					YAML syntax guides
+				</a>
+				&nbsp;if needed.
+			</p>
+			<p>
+				Refer to the&nbsp;
+				<a href="https://github.com/unxok/obsidian-meta-kanban">docs</a>
+				&nbsp;if needed.
+			</p>
+			<button onClick={() => setDetailsOpen(true)}>Error details</button>
+			{isDetailsOpen && (
+				<InfoModal
+					app={app}
+					title={"Error Details"}
+					paragraph={"Please see below for the details of your error"}
+					callback={(content) =>
+						content.createEl("pre").createEl("code", {
+							text: JSON.stringify(error, undefined, 1),
 						})
 					}
 					detailsHandler={setDetailsOpen}

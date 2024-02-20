@@ -22,16 +22,17 @@ export default class MyObsidianPlugin extends Plugin {
 			e.empty();
 			const root = createRoot(e);
 			root.render(
-				<React.StrictMode>
-					<App
-						//data={data}
-						text={s}
-						getSectionInfo={() => i.getSectionInfo(e)}
-						settings={this.settings}
-						app={this.app}
-						plugin={this}
-					/>
-				</React.StrictMode>,
+				// strict mode doesn't play nice with Obsidian's api unfortuntately
+				// <React.StrictMode>
+				<App
+					//data={data}
+					text={s}
+					getSectionInfo={() => i.getSectionInfo(e)}
+					settings={this.settings}
+					app={this.app}
+					plugin={this}
+				/>,
+				// </React.StrictMode>,
 			);
 		});
 

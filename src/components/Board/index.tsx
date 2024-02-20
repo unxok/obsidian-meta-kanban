@@ -1,20 +1,35 @@
 import React from "react";
 import { ConfigSchema } from "../../utils/validateInput";
 import { getDv } from "@/utils/getDv";
-import { getLinkpath, parseLinktext } from "obsidian";
+import { MkRenderer } from "@/components/MkRenderer";
+import {
+	App,
+	MarkdownRenderer,
+	Plugin,
+	getLinkpath,
+	parseLinktext,
+} from "obsidian";
+import { Lane } from "./Lane";
 
 type BoardProps = {
 	config: ConfigSchema;
 	dv: ReturnType<typeof getDv>;
+	app: App;
+	plugin: Plugin;
 };
 
-export const Board = ({ config, dv }: BoardProps) => {
+export const Board = ({ config, dv, app, plugin }: BoardProps) => {
 	const dvData = dv
 		.pages(config.from)
-		.where((p) => eval(config.where))
-		.map((p) => [p.file.link, ...config.columns.map((c) => p[c])]);
+		.where((p) => eval(String(config.where)))
+		.map((p) =>
+			config.columns.reduce((acc, col) => ({ [col]: p[col], ...acc }), {
+				link: p.file.link,
+			}),
+		);
 
 	console.log("heres your dv data ", dvData);
+
 	return (
 		<div className="meta-kanban" id="meta-kanban">
 			<h1>{config.title}</h1>
@@ -28,55 +43,17 @@ export const Board = ({ config, dv }: BoardProps) => {
 					borderRadius: "10px",
 				}}
 			>
-				{config.lanes.map((lane, i) => {
-					return (
-						<div
-							// TODO fix this janky key convention
-							key={`${config.title}-${i}-${lane}`}
-							className="board-lane"
-							style={{
-								flexGrow: 1,
-								border: "var(--background-primary-alt) solid 1px",
-								padding: "10px",
-							}}
-						>
-							<h4>{lane[1] ? lane[1] : lane[0]}</h4>
-							{dvData.map((p, i) => (
-								<div
-									className="lane-card"
-									key={`lane-card-${i}-${Math.random()}`}
-									style={{
-										backgroundColor:
-											"var(--background-primary-alt)",
-									}}
-								>
-									{p.map((v, i) => {
-										if (i === 0) {
-											console.log(parseLinktext(v.path));
-											return (
-												<div
-													key={`lane-card-value-${i}-${Math.random()}`}
-												>
-													<a href={v.path}>
-														{v.path.slice(
-															0,
-															v.path.length - 3,
-														)}
-													</a>
-												</div>
-											);
-										}
-										<div
-											key={`lane-card-value-${i}-${Math.random()}`}
-										>
-											{v}
-										</div>;
-									})}
-								</div>
-							))}
-						</div>
-					);
-				})}
+				{config.lanes.map((lane, i) => (
+					<Lane
+						app={app}
+						plugin={plugin}
+						lane={lane}
+						key={lane.title}
+						propertyName={config.property}
+						columns={config.columns}
+						dvData={dvData}
+					/>
+				))}
 			</div>
 		</div>
 	);

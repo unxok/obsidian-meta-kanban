@@ -33,9 +33,12 @@
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.0.18",
+		"@types/uuid": "^9.0.8",
 		"cross-env": "^7.0.3",
+		"framer-motion": "^11.0.5",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"uuid": "^9.0.1",
 		"zod": "^3.22.4"
 	}
 }
