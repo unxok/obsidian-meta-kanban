@@ -1,4 +1,4 @@
-import { MarkdownRenderer, Plugin } from "obsidian";
+import { MarkdownRenderer, Notice, Plugin } from "obsidian";
 
 import React from "react";
 import { createRoot } from "react-dom/client";
@@ -7,7 +7,7 @@ import { defaultSettings, TSettings } from "@/settings";
 import { MyObsidianPluginSettingsTab } from "@/settings-tab";
 import { loadData } from "@/saveload";
 
-import App from "@/components/App";
+import { App } from "@/components/App";
 
 export default class MyObsidianPlugin extends Plugin {
 	settings: TSettings;
@@ -17,29 +17,37 @@ export default class MyObsidianPlugin extends Plugin {
 
 		this.addSettingTab(new MyObsidianPluginSettingsTab(this.app, this));
 
-		this.registerMarkdownCodeBlockProcessor("meta-kanban", (s, e, i) => {
-			//let data = loadData(s);
-			e.empty();
-			const root = createRoot(e);
-			root.render(
-				// strict mode doesn't play nice with Obsidian's api unfortuntately
-				// <React.StrictMode>
-				<App
-					//data={data}
-					text={s}
-					getSectionInfo={() => i.getSectionInfo(e)}
-					settings={this.settings}
-					app={this.app}
-					plugin={this}
-				/>,
-				// </React.StrictMode>,
-			);
-		});
+		this.registerMarkdownCodeBlockProcessor(
+			"meta-kanban",
+			async (s, e, i) => {
+				//let data = loadData(s);
+				const dv = this.getDv();
+				const metaEdit = this.getMetaEdit();
+				e.empty();
+				const root = createRoot(e);
+				root.render(
+					// strict mode doesn't play nice with Obsidian's api unfortuntately
+					// <React.StrictMode>
+					<App
+						//data={data}
+						text={s}
+						// getSectionInfo={() => i.getSectionInfo(e)}
+						// settings={this.settings}
+						app={this.app}
+						plugin={this}
+						dv={dv}
+						metaEdit={metaEdit}
+					/>,
+					// </React.StrictMode>,
+				);
+			},
+		);
 
 		this.addCommand({
-			id: `insert`,
-			name: `Insert My Plugin`,
+			id: `insert meta kanban board`,
+			name: `Insert Meta Kanban Board`,
 			editorCallback: (e, _) => {
+				// prompts/modals here...
 				e.replaceSelection("```meta-kanban\n```\n");
 			},
 		});
@@ -57,14 +65,28 @@ export default class MyObsidianPlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-	async renderMarkdown(markdown: string) {
-		// Create a temporary div to hold the rendered HTML
-		const tempDiv = createDiv();
-		// Use Obsidian's MarkdownRenderer to render the markdown to our div
-		await MarkdownRenderer.render(this.app, markdown, tempDiv, "/", this);
-		// Now, `tempDiv` contains the rendered HTML. You can insert it into the DOM or use it as needed.
-		console.log(tempDiv.innerHTML);
-		// Cleanup if you're done with the div
-		tempDiv.remove();
+	getDv() {
+		// @ts-ignore forbidden app usage :)
+		const dv = app.plugins.plugins.dataview;
+		if (!dv) {
+			new Notice(
+				"Dataview plugin not found. Please install and enable it, then try again",
+			);
+			return null;
+		}
+		// await dv.api.index.reinitialize();
+		return dv.api;
+	}
+
+	getMetaEdit() {
+		// @ts-ignore forbidden app usage :)
+		const metaEdit = app.plugins.plugins.metaedit;
+		if (!metaEdit) {
+			new Notice(
+				"MetaEdit plugin not found. Please install and enable it, then try again",
+			);
+			return null;
+		}
+		return metaEdit.api;
 	}
 }

@@ -16,9 +16,12 @@ export const Card = ({
 	return (
 		<>
 			<DropIndicator beforeId={page.link.path || "-1"} laneId={laneId} />
+			{/* This should be a motion.div but framer motion isn't liking it */}
 			<div
 				id={page.link.path}
 				draggable
+				// layout="position"
+				// layoutId={page.link.path}
 				onDragStart={(e) =>
 					handleDragStart(e, { id: page.link.path, laneId: laneId })
 				}
@@ -33,7 +36,6 @@ export const Card = ({
 								app={app}
 								plugin={plugin}
 							></CardField>
-							<div className="lane-card-separator"></div>
 						</div>
 					),
 				)}

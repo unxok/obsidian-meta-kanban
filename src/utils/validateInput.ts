@@ -2,7 +2,7 @@ import { Notice, parseYaml } from "obsidian";
 
 import { z } from "zod";
 
-const configSchema = z.object({
+export const configSchema = z.object({
 	title: z.string(),
 	from: z.string().nullable(),
 	where: z.union([z.string(), z.boolean()]),
@@ -17,8 +17,6 @@ const configSchema = z.object({
 		.array()
 		.min(1),
 });
-
-export type ConfigSchema = z.infer<typeof configSchema>;
 
 export const validateInput = (yaml) => {
 	try {

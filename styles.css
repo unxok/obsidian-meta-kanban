@@ -21,6 +21,10 @@
 	text-align: start;
 }
 
+/* .lane-card-field {
+	border: 1px solid white;
+} */
+
 .lane-card-separator {
 	width: 100%;
 	height: 1px;

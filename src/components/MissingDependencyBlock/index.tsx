@@ -1,6 +1,6 @@
 import React from "react";
 
-export const NoDvBlock = () => (
+export const MissingDependencyBlock = () => (
 	<div
 		id="meta-kanban"
 		style={{
@@ -17,11 +17,12 @@ export const NoDvBlock = () => (
 			<a href="https://github.com/blacksmithgu/obsidian-dataview">
 				Dataview
 			</a>{" "}
-			plugin must be installed!
+			and the <a href="https://github.com/chhoumann/MetaEdit">MetaEdit</a>{" "}
+			plugins must be installed!
 		</b>
 		<p>
-			Once you have installed and enabled Dataview, edit this code block
-			or otherwise cause this to re-render to retry.
+			Once you have installed and enabled them, edit this code block or
+			otherwise cause this to re-render to retry.
 		</p>
 		<p>
 			Refer to the{" "}
