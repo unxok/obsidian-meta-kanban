@@ -23898,14 +23898,14 @@ var Lane = ({
     const el = getNearestIndicator(e, indicators);
     el.element.style.opacity = "1";
   };
-  return /* @__PURE__ */ import_react8.default.createElement(
+  return /* @__PURE__ */ import_react8.default.createElement("div", { className: "bg-slate-500 flex flex-col" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-row" }, /* @__PURE__ */ import_react8.default.createElement("h1", null, lane.title), /* @__PURE__ */ import_react8.default.createElement("span", null, cards2.length)), /* @__PURE__ */ import_react8.default.createElement(
     "div",
     {
       id: lane.title,
       onDragOver: handleDragOver,
       onDragLeave: handleDragLeave,
       onDrop: handleDragEnd,
-      className: "flex flex-col grow"
+      className: "flex flex-col ring-blue-600 w-max"
     },
     /* @__PURE__ */ import_react8.default.createElement("h4", null, lane.title),
     cards2.map((page) => /* @__PURE__ */ import_react8.default.createElement(
@@ -23921,7 +23921,7 @@ var Lane = ({
       }
     )),
     /* @__PURE__ */ import_react8.default.createElement(DropIndicator, { beforeId: -1, laneId: lane.value })
-  );
+  ));
 };
 
 // src/components/Board/index.tsx
@@ -23932,26 +23932,20 @@ var Board = ({ config, dv, app, plugin, metaEdit }) => {
     })
   );
   const [cards, setCards] = (0, import_react9.useState)(dvData);
-  return /* @__PURE__ */ import_react9.default.createElement("div", { className: "meta-kanban", id: "meta-kanban" }, /* @__PURE__ */ import_react9.default.createElement("h1", null, config.title), /* @__PURE__ */ import_react9.default.createElement(
-    "div",
+  return /* @__PURE__ */ import_react9.default.createElement("div", { className: "meta-kanban flex flex-row", id: "meta-kanban" }, config.lanes.map((lane, i) => /* @__PURE__ */ import_react9.default.createElement(
+    Lane,
     {
-      className: "board-lane-container bg-green-400"
-    },
-    config.lanes.map((lane, i) => /* @__PURE__ */ import_react9.default.createElement(
-      Lane,
-      {
-        app,
-        plugin,
-        lane,
-        key: lane.title,
-        propertyName: config.property,
-        columns: config.columns,
-        allCards: cards,
-        setCards,
-        metaEdit
-      }
-    ))
-  ));
+      app,
+      plugin,
+      lane,
+      key: lane.title,
+      propertyName: config.property,
+      columns: config.columns,
+      allCards: cards,
+      setCards,
+      metaEdit
+    }
+  )));
 };
 
 // src/components/App.tsx

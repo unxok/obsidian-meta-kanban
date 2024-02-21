@@ -109,35 +109,41 @@ export const Lane = ({
 	};
 
 	return (
-		<div
-			id={lane.title}
-			onDragOver={handleDragOver}
-			onDragLeave={handleDragLeave}
-			onDrop={handleDragEnd}
-			className="flex flex-col grow"
-			// className={`${active ? "active-board-lane" : "board-lane"}`}
+		<div className="bg-slate-500 flex flex-col">
+			<div className="flex flex-row">
+				<h1>{lane.title}</h1>
+				<span>{cards.length}</span>
+			</div>
+			<div
+				id={lane.title}
+				onDragOver={handleDragOver}
+				onDragLeave={handleDragLeave}
+				onDrop={handleDragEnd}
+				className="flex flex-col ring-blue-600 w-max"
+				// className={`${active ? "active-board-lane" : "board-lane"}`}
 
-			// style={{
-			// 	flexGrow: 1,
-			// 	border: "var(--background-primary-alt) solid 1px",
-			// 	display: "flex",
-			// 	flexDirection: "column",
-			// 	padding: "10px",
-			// }}
-		>
-			<h4>{lane.title}</h4>
-			{cards.map((page) => (
-				<Card
-					page={page}
-					key={page.link.path}
-					handleDragStart={handleDragStart}
-					laneId={lane.value}
-					columns={columns}
-					app={app}
-					plugin={plugin}
-				></Card>
-			))}
-			<DropIndicator beforeId={-1} laneId={lane.value} />
+				// style={{
+				// 	flexGrow: 1,
+				// 	border: "var(--background-primary-alt) solid 1px",
+				// 	display: "flex",
+				// 	flexDirection: "column",
+				// 	padding: "10px",
+				// }}
+			>
+				<h4>{lane.title}</h4>
+				{cards.map((page) => (
+					<Card
+						page={page}
+						key={page.link.path}
+						handleDragStart={handleDragStart}
+						laneId={lane.value}
+						columns={columns}
+						app={app}
+						plugin={plugin}
+					></Card>
+				))}
+				<DropIndicator beforeId={-1} laneId={lane.value} />
+			</div>
 		</div>
 	);
 };
