@@ -54,6 +54,24 @@ esbuild
 						from: ["./main.js"],
 						to: ["./build/meta-kanban/main.js"],
 					},
+					{
+						from: ["./build/meta-kanban/main.js"],
+						to: [
+							"./test vault/.obsidian/plugins/meta-kanban/main.js",
+						],
+					},
+					{
+						from: ["./build/meta-kanban/manifest.json"],
+						to: [
+							"./test vault/.obsidian/plugins/meta-kanban/manifest.json",
+						],
+					},
+					{
+						from: ["./build/meta-kanban/styles.css"],
+						to: [
+							"./test vault/.obsidian/plugins/meta-kanban/styles.css",
+						],
+					},
 				],
 			}),
 		],

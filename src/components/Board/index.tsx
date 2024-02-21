@@ -29,14 +29,14 @@ export const Board = ({ config, dv, app, plugin, metaEdit }: BoardProps) => {
 		<div className="meta-kanban" id="meta-kanban">
 			<h1>{config.title}</h1>
 			<div
-				className="board-lane-container"
-				style={{
-					display: "flex",
-					flexDirection:
-						config.direction === "vertical" ? "column" : "row",
-					gap: "5px",
-					borderRadius: "10px",
-				}}
+				className="board-lane-container bg-green-400"
+				// style={{
+				// 	display: "flex",
+				// 	flexDirection:
+				// 		config.direction === "vertical" ? "column" : "row",
+				// 	gap: "5px",
+				// 	borderRadius: "10px",
+				// }}
 			>
 				{config.lanes.map((lane, i) => (
 					<Lane

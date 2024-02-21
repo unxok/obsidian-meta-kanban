@@ -21,7 +21,6 @@ export const Lane = ({
 	};
 
 	const handleDragOver = (e) => {
-		console.log("we out ehre");
 		e.preventDefault();
 		highlightIndicator(e);
 		setActive(true);
@@ -92,7 +91,7 @@ export const Lane = ({
 				element: indicators[indicators.length - 1],
 			},
 		);
-		console.log(closestInd);
+		// console.log(closestInd);
 		return closestInd;
 	};
 
@@ -115,14 +114,16 @@ export const Lane = ({
 			onDragOver={handleDragOver}
 			onDragLeave={handleDragLeave}
 			onDrop={handleDragEnd}
-			className={`${active ? "active-board-lane" : "board-lane"}`}
-			style={{
-				flexGrow: 1,
-				border: "var(--background-primary-alt) solid 1px",
-				display: "flex",
-				flexDirection: "column",
-				padding: "10px",
-			}}
+			className="flex flex-col grow"
+			// className={`${active ? "active-board-lane" : "board-lane"}`}
+
+			// style={{
+			// 	flexGrow: 1,
+			// 	border: "var(--background-primary-alt) solid 1px",
+			// 	display: "flex",
+			// 	flexDirection: "column",
+			// 	padding: "10px",
+			// }}
 		>
 			<h4>{lane.title}</h4>
 			{cards.map((page) => (

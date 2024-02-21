@@ -35,6 +35,8 @@ type AppProps = {
 	metaEdit: any;
 };
 export const App = ({ app, plugin, text, dv, metaEdit }: AppProps) => {
+	// console.log("beep boop beep boop");
+
 	if (!dv) return <MissingDependencyBlock />;
 	if (!metaEdit) return <MissingDependencyBlock />;
 
